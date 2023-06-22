@@ -1,0 +1,27 @@
+<!-- ES6 Module -->
+<script type="module"></script>
+<script type="module" src="app.js"></script>
+<script src="app.mjs"></script>
+
+// Variable
+num1$_
+
+// Native / Primitive Data Type
+Number //64 bit Floating Point Number - 16 digits
+String // UTF16 - 16 bit per character
+Boolean // 1 bit per character
+
+Number = Int & Float
+String =  String & Char
+
+// Construct / Non Primitive Data Type
+Array & Objects
+
+
+// Operators
+
+Increment/Decrement:
+age++, age-- // post increment/decrement
+++age, --age // pre increment/decrement
+console.log(age++) // 5
+console.log(++age) // 6
