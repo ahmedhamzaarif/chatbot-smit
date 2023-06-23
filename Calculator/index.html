@@ -47,31 +47,6 @@
     <!-- BootStrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <!-- Custom JS -->
-    <script type="module">
-      let calculate = ()=> {
-        let num1 = +document.querySelector("#num1").value
-        let num2 = +document.querySelector("#num2").value
-        let resultEl = document.querySelector("#result")
-        let operator = document.getElementById("operator").value;
-
-        switch (operator) {
-          case "+":
-            result = num1 + num2;
-            break;
-          case "-":
-            result = num1 - num2;
-            break;
-          case "*":
-            result = num1 * num2;
-            break;
-          case "/":
-            result = num1 / num2;
-            break;
-          default:
-            result = "Invalid operator";
-        }
-        document.getElementById("result").innerHTML = `The result of ${num1} ${operator} ${num2} is ${result}.`;
-      }
-    </script>
+    <script src="index.mjs"></script>
   </body>
 </html>
