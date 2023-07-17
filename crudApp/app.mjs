@@ -12,20 +12,44 @@ let products = [
     name: "ABC Product",
     price: "$59",
     desccription: "Lorem ipsum dolor imet"
+  },
+  {
+    id : 456,
+    name: "DEF Product",
+    price: "$59",
+    desccription: "Lorem ipsum dolor imet"
 
   }
 ]
 
 app.get('/products', (req, res) => {
-  res.send('All Products!')
+  res.send(products)
 })
 app.get('/product/:id', (req, res) => {
   const prdId = req.params.id;
   // res.send({message: `Welcome ${prdId}`})
-  res.send('Single Products! ' + prdId)
+  // res.send('Single Products! ' + prdId)
+
+  if (isNaN(req.params.id)){
+    res.status(403).send("invalid product id")
+  }
+  let isFound = false;
+  for (let i = 0; i < products.length; i++){
+    if (products[i].id === req.params.id){
+      isFound = i;
+      break;
+    }
+  }
+  if (isFound === false){
+    res.status(404).send("product not found")
+  } else {
+    res.send(products[isFound])
+  }
+  // res.send(products)
 })
 app.post('/product', (req, res) => {
   res.send('Salam Pakistan!')
+
 })
 app.put('/product/:id', (req, res) => {
   res.send('Salam Pakistan!')
@@ -36,5 +60,5 @@ app.delete('/product/:id', (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${port} 🚀`)
 })
