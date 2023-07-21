@@ -1,7 +1,10 @@
+import bodyParser from 'body-parser'
 import express from 'express'
 const app = express()
 const port = process.env.PORT || 3000
 
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.get('/', (req, res) => {
   res.send('Salam Pakistan!')
 })
@@ -61,12 +64,14 @@ app.get('/product/:id', (req, res) => {
 // upload product
 app.post('/product', (req, res) => {
   // res.send('Salam Pakistan!')
+try {
+  
 
   if(!req.body.name
     || !req.body.price
     || !req.body.description){
 
-      res.status(403).send(`
+    return  res.status(403).send(`
         required parameter missing. example JSON request body:
         {
           id: 123, // always a number
@@ -85,13 +90,63 @@ app.post('/product', (req, res) => {
     });
 
     res.status(201).send({message: "create product"})
-});
+
+  } catch (error) {
+    res.status(400).send({message: error})
+
+  }
+
+  });
 
 // -------------------------------------
-app.put('/product/:id', (req, res) => {
-  res.send('Salam Pakistan!')
-})
+// app.put('/product/:id', (req, res) => {
+//   res.send('Salam Pakistan!')
+// })
+app.put("/product/:id", (req, res) => {
 
+  if (
+    !req.body.name
+    && !req.body.price
+    && !req.body.description) {
+
+    res.status(403).send(`
+      required parameter missing. 
+      atleast one parameter is required: name, price or description to complete update
+      example JSON request body:
+      {
+        name: "abc product",
+        price: "$23.12",
+        description: "abc product description"
+      }`);
+  }
+
+
+  let isFound = false;
+
+  for (let i = 0; i < products.length; i++) {
+    if (products[i].id == req.params.id) {
+      isFound = i;
+      break;
+    }
+  }
+
+  if (isFound === false) {
+    res.status(404);
+    res.send({
+      message: "product not found"
+    });
+  } else {
+
+    if (req.body.name) products[isFound].name = req.body.name
+    if (req.body.price) products[isFound].price = req.body.price
+    if (req.body.description) products[isFound].description = req.body.description
+
+    res.send({
+      message: "product is updated with id: " + products[isFound].id,
+      data: products[isFound]
+    });
+  }
+});
 // delete product
 app.delete('/product/:id', (req, res) => {
   // res.send('Delete Product!')
