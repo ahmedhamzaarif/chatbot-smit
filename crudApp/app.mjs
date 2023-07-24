@@ -6,7 +6,9 @@ import { MongoClient } from 'mongodb';
 config()
 const app = express()
 const port = process.env.PORT || 3000
+var cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.get('/', (req, res) => {
