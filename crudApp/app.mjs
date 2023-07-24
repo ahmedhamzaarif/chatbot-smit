@@ -1,5 +1,9 @@
 import bodyParser from 'body-parser'
 import express from 'express'
+import { DB } from './dbconfig.js';
+import { config } from 'dotenv';
+import { MongoClient } from 'mongodb';
+config()
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -8,6 +12,12 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.get('/', (req, res) => {
   res.send('Salam Pakistan!')
 })
+
+
+const mongodbURI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.nabnixg.mongodb.net/?retryWrites=true&w=majority`
+const client = new MongoClient(mongodbURI);
+const database = client.db('ecom');
+const productsCollection = database.collection('products');
 
 let products = [
   {
@@ -62,7 +72,7 @@ app.get('/product/:id', (req, res) => {
 })
 
 // upload product
-app.post('/product', (req, res) => {
+app.post('/product', async (req, res) => {
   // res.send('Salam Pakistan!')
 try {
   
@@ -82,14 +92,15 @@ try {
       `);
     }
     
-    products.push({
-      id: req.body.id,
-      name: req.body.name,
-      price: req.body.price,
-      description: req.body.description,
-    });
+    await productsCollection.insertOne({
+      name:req.body.name,
+      desccription:req.body.description,
+      price:req.body.description  
+    }).then((result)=>{
+      res.status(201).send({message: "create product",result})
 
-    res.status(201).send({message: "create product"})
+    })
+
 
   } catch (error) {
     res.status(400).send({message: error})
