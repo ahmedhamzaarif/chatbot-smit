@@ -3,12 +3,19 @@ import express from 'express'
 import { DB } from './dbconfig.js';
 import { config } from 'dotenv';
 import { MongoClient } from 'mongodb';
+import cors from "cors"
 config()
 const app = express()
 const port = process.env.PORT || 3000
-var cors = require('cors')
+// var cors = require('cors')
 
-app.use(cors())
+
+var corsOptions = {
+  origin: 'http://localhost:3000/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.get('/', (req, res) => {
