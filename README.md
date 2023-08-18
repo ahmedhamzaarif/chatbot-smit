@@ -8,3 +8,4 @@ This repository is created for SMIT's AI & Chatbot course.
 4. Weather App
 5. [Express Server App](https://express-app-392605.ts.r.appspot.com/)
 6. [CrudApp](https://crudapp-smit.uc.r.appspot.com/) | [Doc](https://documenter.getpostman.com/view/28611112/2s9XxwxZpz)
+7. [Facebook Post](https://react-app-f7830.web.app/)
