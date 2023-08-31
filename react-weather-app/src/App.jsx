@@ -12,7 +12,7 @@ function App() {
   let getWeather = async (e) => {
     e.preventDefault()
     try{
-      const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${cityRef.current.value}&aqi=no`)
+      const response = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${cityRef.current.value}&aqi=no`)
       console.log("response: ", response.data)
       const data = response.data
       setWeatherData([{ 
