@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 body { font-family: 'Poppins', sans-serif; background: #1B262C url('./assets/bg.svg') no-repeat; background-size: cover; background-attachment: fixed; color: #fff; }
+#headerLogo{height: 70px;}
 .weatherCard:not(:first-child) { transform: scale(0.9); }
 .weatherCard:first-child {margin-bottom: 20px;}
 .weatherCard:first-child > div { box-shadow: rgba(255, 255, 255,0.2) 0px 7px 29px 0px; }
