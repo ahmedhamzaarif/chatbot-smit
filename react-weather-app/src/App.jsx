@@ -44,7 +44,6 @@ function App() {
       setload(true)
       const response = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${cityRef.current.value}&days=10`)
       // console.log("response: ", response.data)
-      // cityRef.current.value = ""
       setWeatherData([ response.data, ...weatherData]);
       e.target.reset()
       setload(false)
@@ -58,8 +57,8 @@ function App() {
       <Header logo={logo} />
 
 
-      <div className='lg:container lg:mx-auto p-4 pb-10'>
-        <h1 className='text-4xl mx-auto sm:w-11/12 md:w-8/12 lg:w-7/12 text-center mt-5'>Seeing the weather of the whole world with <span className='font-semibold'>Weather Canvas!</span></h1>
+      <div className='lg:container lg:mx-auto p-6 pb-10'>
+        <h1 className='text-3xl sm:text-4xl mx-auto sm:w-11/12 md:w-8/12 lg:w-7/12 text-center mt-5'>Seeing the weather of the whole world with <span className='font-semibold'>Weather Canvas!</span></h1>
       
         <form onSubmit={getWeather} className='mx-auto mt-5 mb-10'>
           <div className='flex justify-center max-w-full px-2'>
