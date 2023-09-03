@@ -26,7 +26,12 @@ function App() {
         const response =  await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${position.coords.latitude},${position.coords.longitude}&days=3`)
         setload(false)
         setCurrentWeather(response.data);
-      })
+      }, (error) => {
+          if (error.code === NO_LOCATION_PROVIDER_AVAILABLE) {
+            return alert("Open Location from settings")
+          }
+        }
+      )
     } else {
       console.log("Geolocation is not supported by this browser.")
     }
