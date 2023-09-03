@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import axios from 'axios'
 import 'boxicons'
@@ -13,16 +13,40 @@ function App() {
   const [weatherData, setWeatherData] = useState([])
   const [load, setload] = useState(false)
   const cityRef = useRef(null)
+  const [currentWeather, setCurrentWeather] = useState(null)
+
+  useEffect(() => {
+    // console.log("I am am effect!")
+    
+    if(navigator.geolocation){
+      // console.log("I am am effect func!")
+      navigator.geolocation.getCurrentPosition(async (position)=>{
+        console.log("position: ", position.coords.latitude,position.coords.longitude)
+
+        const response =  await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${position.coords.latitude},${position.coords.longitude}&days=3`)
+        setCurrentWeather(response.data);
+
+      })
+    } else {
+      console.log("Geolocation is not supported by this browser.")
+    }
+    return () => {
+      
+    }
+  }, [])
+  
+
 
   let getWeather = async (e) => {
     e.preventDefault()
-    setload(true)
-
+    
     try{
+      setload(true)
       const response = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${cityRef.current.value}&days=10`)
       // console.log("response: ", response.data)
-      cityRef.current.value = ""
+      // cityRef.current.value = ""
       setWeatherData([ response.data, ...weatherData]);
+      e.target.reset()
       setload(false)
     } catch(e) {
       setload(false)
@@ -47,12 +71,21 @@ function App() {
         {load ? <Loader/> : ''}
         </form>
 
+        {weatherData.length || currentWeather ? null : <div>No Data</div>}
+
         <div className="flex flex-wrap">
-          {weatherData.map((weather, i)=>{
+        {weatherData.length ? 
+            // {
+              weatherData.map((weather, i)=>{
               return <Card weather={weather} key={i} />
             })
-          }
+          // }
+          : null}
+
+        {currentWeather && <Card weather={currentWeather}/>}
         </div>
+
+
       </div>
       <Footer/>
     </>
