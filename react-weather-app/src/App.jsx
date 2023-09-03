@@ -20,12 +20,13 @@ function App() {
     
     if(navigator.geolocation){
       // console.log("I am am effect func!")
+      setload(true)
       navigator.geolocation.getCurrentPosition(async (position)=>{
         console.log("position: ", position.coords.latitude,position.coords.longitude)
 
         const response =  await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=60b1cec83b794868a4c45015231007&q=${position.coords.latitude},${position.coords.longitude}&days=3`)
         setCurrentWeather(response.data);
-
+        setload(false)
       })
     } else {
       console.log("Geolocation is not supported by this browser.")
@@ -71,7 +72,7 @@ function App() {
         {load ? <Loader/> : ''}
         </form>
 
-        {weatherData.length || currentWeather ? null : <div>No Data</div>}
+        {/* {weatherData.length || currentWeather ? null : <div>No Data</div>} */}
 
         <div className="flex flex-wrap">
         {weatherData.length ? 
