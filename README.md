@@ -9,4 +9,6 @@ This repository is created for SMIT's AI & Chatbot course.
 5. [Express Server App](https://express-app-392605.ts.r.appspot.com/)
 6. [CrudApp](https://crudapp-smit.uc.r.appspot.com/) | [Doc](https://documenter.getpostman.com/view/28611112/2s9XxwxZpz)
 7. [Facebook Post](https://react-app-f7830.web.app/)
-8. [Weather App (React)](https://weather.ahmedhamza.pk)
+8. [Light On/Off & Temperature Increase/Decrease (React)](https://chatbot-smit.vercel.app/)
+9. [Weather App (React)](https://weather.ahmedhamza.pk)
+10. ChatApp (React)
