@@ -152,8 +152,8 @@ app.delete("/api/v1/story/:id", async (req, res) => {
 });
 
 
-app.get(express.static(path.join(__dirname, "./web/build")))
-app.use("/", express.static(path.join(__dirname, './web/build')))
+app.get("/",express.static(path.join(__dirname, "./web/build")))
+app.use(express.static(path.join(__dirname, './web/build')))
 
 app.use((req, res) => {
   res.status(404).send("Not Found");
