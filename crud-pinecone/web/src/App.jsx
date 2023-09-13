@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
 import Loader from './components/Loader';
 import Alert from './components/Alert';
+import Avatar from './assets/user.svg'
 
 const baseUrl = "http://localhost:5001"
 
@@ -11,6 +12,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [alert, setAlert] = useState("")
   const [data, setData] = useState([])
+  const searchInputRef = useRef(null)
   
   useEffect(() => {
     if(alert){
@@ -50,7 +52,7 @@ function App() {
       const response = await axios.post(`${baseUrl}/api/v1/story`, {
         title: titleInputRef.current.value,
         text: bodyInputRef.current.value,
-      });
+      })
 
       console.log('response: ', response.data)
       setIsLoading(false)
@@ -60,7 +62,7 @@ function App() {
       console.log(data)
     } catch (e){
       setIsLoading(false)
-      console.log(e.message)
+      console.log(e)
     }
   }
   const deleteStory = async (id)=>{
@@ -94,22 +96,43 @@ function App() {
     }
     
   } 
+  const searchStories = async (e)=>{
+    e.preventDefault()
+    try{
+      setIsLoading(true)
+      const resp = await axios.get(`${baseUrl}/api/v1/search?q=${searchInputRef.current.value}`)
+      console.log(resp.data)
+      setData(resp.data?.response?.matches);
+      setIsLoading(false)
+    } catch(e){
+      setIsLoading(false)
+      console.log(e.message)
+    }
+  }
   return (
-    <div className='p-10'>
+    <div className='md:w-2/5 mx-auto p-4'>
       <h1 className='text-center text-5xl mb-5 font-bold'>Social Stories</h1>
 
-      <form onSubmit={postStory} className='md:w-1/2 mx-auto mb-10'>
+
+      {/* New Stories */}
+      <form onSubmit={postStory} className='mb-10'>
         <label htmlFor="titleInput" className='w-full'>Title: </label>
-        <input type="text" id="titleInput" maxLength={20} minLength={2} required ref={titleInputRef} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2'/>
+        <input type="text" id="titleInput" maxLength={20} minLength={2} required ref={titleInputRef} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2 focus-visible:outline-none focus-visible:bg-gray-200'/>
         <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
-        <textarea type="text" id="bodyInput" rows="3" maxLength={999} minLength={10} required ref={bodyInputRef} className='p-2 bg-gray-100 rounded-md w-full mb-5'></textarea>
-        <button type="submit" className='bg-slate-500 rounded-md px-8 py-2 text-white'>Post</button>
+        <textarea type="text" id="bodyInput" rows="3" maxLength={999} minLength={10} required ref={bodyInputRef} className='p-2 bg-gray-100 rounded-md w-full mb-5 focus-visible:outline-none focus-visible:bg-gray-200'></textarea>
+        <button type="submit" className='bg-violet-500 rounded-md px-8 py-2 text-white'>Post</button>
+      </form>
+
+      {/* Search Stories */}
+      <form onSubmit={searchStories} className='mb-5'>
+        <input type="search" id='searchInput' ref={searchInputRef} placeholder='Search' className='bg-slate-100 p-2 rounded-md w-80 focus-visible:outline-none focus-visible:bg-gray-200 w-full'/>
+        <button type='submit' hidden>Search</button>
       </form>
 
       {alert && <Alert msg={alert}/>}
       {isLoading ? <Loader/> : ''}
     
-      <div className="md:w-1/2 mx-auto">
+      <div className="">
         {data.map((eachStory, i)=>(
           <div className='card p-5' key={i}>
             { 
@@ -121,14 +144,21 @@ function App() {
                     <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.metadata?.title} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2'/>
                     <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
                     <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.metadata?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5'></textarea>
-                    <button type="submit" className='bg-slate-500 rounded-md px-8 py-2 text-white'>Post</button>
+                    <div className="flex gap-x-2">
+                      <button type="submit" className='bg-violet-500 rounded-md px-4 py-2 text-white'>Edit</button>
+                      <button onClick={()=>{
+                        eachStory.isEdit = false;
+                        setData([...data])
+                      }} className='border border-1 border-violet-500 rounded-md px-4 py-2'>Cancel</button>
+                    </div>
+
                   </form>
                 </>
                ) : 
                (
                 // Simple Card */
                 <>
-                  <select className='bg-slate-100 text-sm p-2 border-0 rounded-md float-right'>
+                  <select className='bg-slate-100 text-sm py-2 px-4 border-0 rounded-md float-right'>
                     <option>...</option>
                     <option onClick={()=>{deleteStory(eachStory?.id)}}>Delete</option>
                     <option onClick={() => {
@@ -137,7 +167,10 @@ function App() {
                         setData([...data]);
                       }}>Edit </option>
                   </select>
-                  <h2>{eachStory?.metadata?.title}</h2>
+                  <h2 className='flex gap-x-2 mb-2 items-center'>
+                    <img src={Avatar} style={{height: '30px'}}/>
+                     {eachStory?.metadata?.title}
+                  </h2>
                   <p>{eachStory?.metadata?.text}</p>
                 </>
 

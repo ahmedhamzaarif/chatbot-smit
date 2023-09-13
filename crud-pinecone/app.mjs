@@ -24,13 +24,13 @@ const pinecone = new Pinecone({
 
 const app = express();
 app.use(express.json());
+// app.use(cors())
 app.use(cors(["http://localhost:3000", "127.0.0.1"]));
 app.use(morgan('combined'));
 
 // Get All
 app.get('/api/v1/stories/', async (req, res) => {
   const queryText = ""
-  // const queryText = "retreated"
   const response = await openai.embeddings.create({
     model: "text-embedding-ada-002",
     input: queryText,
@@ -42,11 +42,9 @@ app.get('/api/v1/stories/', async (req, res) => {
   const index = pinecone.Index(process.env.PINECONE_INDEX_NAME);
   await index.query({
       vector: vector,
-      // id: "vec1",
       topK: 100,
       includeValues: false,
       includeMetadata: true,
-      // namespace: process.env.PINECONE_NAME_SPACE
   }).then((resp)=>{
     res.send({
       response: resp,
@@ -59,6 +57,37 @@ app.get('/api/v1/stories/', async (req, res) => {
     })
   })
 });
+
+// Search
+app.get('/api/v1/search/', async (req, res) => {
+  const queryText = req.query.q
+  const response = await openai.embeddings.create({
+    model: "text-embedding-ada-002",
+    input: queryText,
+  });
+
+  const vector = response?.data[0]?.embedding
+  console.log("vector: ", vector);
+
+  const index = pinecone.Index(process.env.PINECONE_INDEX_NAME);
+  await index.query({
+      vector: vector,
+      topK: 3,
+      includeValues: false,
+      includeMetadata: true,
+  }).then((resp)=>{
+    res.send({
+      response: resp,
+      message:"All Stories Are Here"
+    })
+  }).catch((error)=>{
+    res.status(400).send({
+      message: "Error While Getting Stories",
+      error
+    })
+  })
+});
+
 
 // Upload 
 app.post('/api/v1/story', async (req, res) => {
@@ -161,6 +190,5 @@ app.use((req, res) => {
 
 const port = process.env.PORT || 5001
 app.listen(port, () => {
-  // console.log(`App running on port ${port} 🚀`, config())
   console.log(`App running on port ${port} 🚀`)
 })
