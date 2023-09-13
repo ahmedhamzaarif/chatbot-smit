@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* .card{
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  margin-bottom: 20px;
-  padding: 20px;
-} */
+body{font-family: 'Jost', sans-serif;}
+.card{box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;border-radius: 8px;margin-bottom: 20px;}
+
+.loader { display:inline-block; font-size:0; padding:0; margin:auto }
+.loader span { vertical-align:middle; border-radius:100%; display:inline-block; width:10px; height:10px; margin:3px 2px; animation:loader .8s linear infinite alternate }
+.loader span:nth-child(1) { animation-delay:-1s; background:rgba(245,135,51,.6) }
+.loader span:nth-child(2) { animation-delay:-.8s; background:rgba(245,135,51,.8) }
+.loader span:nth-child(3) { animation-delay:-.26666s; background:rgba(245,135,51,1) }
+.loader span:nth-child(4) { animation-delay:-.8s; background:rgba(245,135,51,.8) }
+.loader span:nth-child(5) { animation-delay:-1s; background:rgba(245,135,51,.4) }
+@keyframes loader { 0% { transform:scale(0) } to { transform:scale(1) } }

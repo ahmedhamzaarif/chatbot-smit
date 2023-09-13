@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios'
+import Loader from './components/Loader';
+import Alert from './components/Alert';
 
 const baseUrl = "http://localhost:5001"
 
@@ -34,7 +36,8 @@ function App() {
       setIsLoading(false);
     } catch (e) {
       setIsLoading(false);
-      console.log(e);
+      console.log(e.message);
+      setAlert(e.message)
     }
 
   }
@@ -44,8 +47,6 @@ function App() {
 
     try{
       setIsLoading(true)
-
-      // const response = await axios.post(`${baseUrl}/api/v1/story`)
       const response = await axios.post(`${baseUrl}/api/v1/story`, {
         title: titleInputRef.current.value,
         text: bodyInputRef.current.value,
@@ -53,6 +54,7 @@ function App() {
 
       console.log('response: ', response.data)
       setIsLoading(false)
+      getAllStories()
       setAlert(response?.data?.message)
       e.target.reset()
       console.log(data)
@@ -60,29 +62,87 @@ function App() {
       setIsLoading(false)
       console.log(e.message)
     }
-
   }
+  const deleteStory = async (id)=>{
+    try{
+      setIsLoading(true)
+      const response = await axios.delete(`${baseUrl}/api/v1/story/${id}`)
+      console.log("response: ", response.data)
+      setIsLoading(false)
+      setAlert(response?.data?.message)
+      getAllStories()
+    }catch(e){
+      console.log(e.message)
+    }
+  }
+  const updateStory = async (e, id)=>{
+    e.preventDefault()
+    try{
+      setIsLoading(true)
+      const response = await axios.put(`${baseUrl}/api/v1/story/${id}`, {
+        title: e.target.titleInput.value,
+        text: e.target.bodyInput.value
+      })
+      console.log("response: ", response.data)
+      setIsLoading(false)
+      getAllStories()
+      setAlert(response?.data?.message)
+
+    } catch(e){
+      setIsLoading(false)
+      console.log(e.message)
+    }
+    
+  } 
   return (
     <div className='p-10'>
       <h1 className='text-center text-5xl mb-5 font-bold'>Social Stories</h1>
 
       <form onSubmit={postStory} className='md:w-1/2 mx-auto mb-10'>
         <label htmlFor="titleInput" className='w-full'>Title: </label>
-        <input type="text" id="bodyInput" maxLength={20} minLength={2} required ref={titleInputRef} className='w-full border-2 mb-5 rounded-md p-2'/>
+        <input type="text" id="titleInput" maxLength={20} minLength={2} required ref={titleInputRef} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2'/>
         <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
-        <textarea type="text" id="bodyInput" rows="5" maxLength={999} minLength={10} required ref={bodyInputRef} className='p-2 border border-2 rounded-md w-full mb-5'></textarea>
+        <textarea type="text" id="bodyInput" rows="3" maxLength={999} minLength={10} required ref={bodyInputRef} className='p-2 bg-gray-100 rounded-md w-full mb-5'></textarea>
         <button type="submit" className='bg-slate-500 rounded-md px-8 py-2 text-white'>Post</button>
       </form>
 
-      {alert && <div className='alert'>{alert}</div>}
-      {isLoading ? <div className='text-white w-fit bg-slate-500 p-2 rounded-md'>Loading...</div>: ''}
-
+      {alert && <Alert msg={alert}/>}
+      {isLoading ? <Loader/> : ''}
     
-      <div className="grid grid-cols-3 gap-4">
-        {data.map((item, i)=>(
-          <div className='shadow-xl p-5 bg-slate-50' key={i}>
-          <h2>{item?.metadata?.title}</h2>
-          <p>{item?.metadata?.text}</p>
+      <div className="md:w-1/2 mx-auto">
+        {data.map((eachStory, i)=>(
+          <div className='card p-5' key={i}>
+            { 
+              eachStory.isEdit ? (
+             
+                <>
+                  <form onSubmit={(e)=>{updateStory(e, eachStory?.id)}} className='w-3/4 mx-auto'>
+                    <label htmlFor="titleInput" className='w-full'>Title: </label>
+                    <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.metadata?.title} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2'/>
+                    <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
+                    <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.metadata?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5'></textarea>
+                    <button type="submit" className='bg-slate-500 rounded-md px-8 py-2 text-white'>Post</button>
+                  </form>
+                </>
+               ) : 
+               (
+                // Simple Card */
+                <>
+                  <select className='bg-slate-100 text-sm p-2 border-0 rounded-md float-right'>
+                    <option>...</option>
+                    <option onClick={()=>{deleteStory(eachStory?.id)}}>Delete</option>
+                    <option onClick={() => {
+                        eachStory.isEdit = true;
+                        console.log(eachStory.isEdit)
+                        setData([...data]);
+                      }}>Edit </option>
+                  </select>
+                  <h2>{eachStory?.metadata?.title}</h2>
+                  <p>{eachStory?.metadata?.text}</p>
+                </>
+
+            )
+               }
           </div>
         ))}
       </div>
