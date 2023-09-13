@@ -115,16 +115,16 @@ function App() {
 
 
       {/* New Stories */}
-      <form onSubmit={postStory} className='mb-10'>
+      <form onSubmit={postStory} className='mb-5'>
         <label htmlFor="titleInput" className='w-full'>Title: </label>
         <input type="text" id="titleInput" maxLength={20} minLength={2} required ref={titleInputRef} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2 focus-visible:outline-none focus-visible:bg-gray-200'/>
         <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
         <textarea type="text" id="bodyInput" rows="3" maxLength={999} minLength={10} required ref={bodyInputRef} className='p-2 bg-gray-100 rounded-md w-full mb-5 focus-visible:outline-none focus-visible:bg-gray-200'></textarea>
-        <button type="submit" className='bg-violet-500 rounded-md px-8 py-2 text-white'>Post</button>
+        <button type="submit" className='bg-violet-500 rounded-md px-4 py-2 text-white font-semibold'>Post</button>
       </form>
 
       {/* Search Stories */}
-      <form onSubmit={searchStories} className='mb-5'>
+      <form onSubmit={searchStories} className='mb-10'>
         <input type="search" id='searchInput' ref={searchInputRef} placeholder='Search' className='bg-slate-100 p-2 rounded-md w-80 focus-visible:outline-none focus-visible:bg-gray-200 w-full'/>
         <button type='submit' hidden>Search</button>
       </form>
@@ -141,15 +141,15 @@ function App() {
                 <>
                   <form onSubmit={(e)=>{updateStory(e, eachStory?.id)}} className='w-3/4 mx-auto'>
                     <label htmlFor="titleInput" className='w-full'>Title: </label>
-                    <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.metadata?.title} className='w-full bg-gray-100 border-transparent focus:border-0 mb-5 rounded-md p-2'/>
+                    <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.metadata?.title} className='w-full bg-gray-100 border-transparent mb-5 rounded-md p-2 focus-visible:outline-none focus-visible:bg-gray-200'/>
                     <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
-                    <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.metadata?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5'></textarea>
+                    <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.metadata?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5  focus-visible:outline-none focus-visible:bg-gray-200'></textarea>
                     <div className="flex gap-x-2">
-                      <button type="submit" className='bg-violet-500 rounded-md px-4 py-2 text-white'>Edit</button>
+                      <button type="submit" className='bg-violet-500 rounded-md px-4 py-2 font-semibold text-white'>Edit</button>
                       <button onClick={()=>{
                         eachStory.isEdit = false;
                         setData([...data])
-                      }} className='border border-1 border-violet-500 rounded-md px-4 py-2'>Cancel</button>
+                      }} className='border border-1 border-violet-500 text-violet-500 font-semibold rounded-md px-4 py-2'>Cancel</button>
                     </div>
 
                   </form>
