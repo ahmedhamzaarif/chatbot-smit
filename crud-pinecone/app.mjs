@@ -10,6 +10,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from "openai";
 import "dotenv/config.js";
 import './config/index.mjs'
+import http from "http"
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -188,7 +189,9 @@ app.use((req, res) => {
   res.status(404).send("Not Found");
 })
 
+const server = http.createServer(app)
+
 const port = process.env.PORT || 5008
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App running on port ${port} 🚀`)
 })
