@@ -1,6 +1,6 @@
 {
   "version": 2,
   "name": "PineCone-DataBase",
-  "builds": [{ "src": "app.mjs", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/app.mjs" }]
+  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/app.js" }]
 }
