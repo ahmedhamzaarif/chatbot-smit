@@ -181,14 +181,14 @@ app.delete("/api/v1/story/:id", async (req, res) => {
 });
 
 
-app.get(express.static(path.join(__dirname, "./web/build")))
-app.use("/", express.static(path.join(__dirname, './web/build')))
+app.get("/",express.static(path.join(__dirname, "./web/build")))
+app.use( express.static(path.join(__dirname, './web/build')))
 
 app.use((req, res) => {
   res.status(404).send("Not Found");
 })
 
-const port = process.env.PORT || 5001
+const port = process.env.PORT || 5008
 app.listen(port, () => {
   console.log(`App running on port ${port} 🚀`)
 })
