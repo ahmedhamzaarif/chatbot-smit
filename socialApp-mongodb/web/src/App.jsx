@@ -32,7 +32,7 @@ function App() {
       setIsLoading(true);
       const resp = await axios.get(`${baseUrl}/api/v1/stories`)
       console.log(resp.data);
-      setData(resp.data?.response?.matches);
+      setData(resp.data);
 
       setIsLoading(false);
     } catch (e) {
@@ -101,7 +101,7 @@ function App() {
       setIsLoading(true)
       const resp = await axios.get(`${baseUrl}/api/v1/search?q=${searchInputRef.current.value}`)
       console.log(resp.data)
-      setData(resp.data?.response?.matches);
+      setData(resp.data);
       setIsLoading(false)
     } catch(e){
       setIsLoading(false)
@@ -131,18 +131,17 @@ function App() {
       {alert && <Alert msg={alert}/>}
       {isLoading ? <Loader/> : ''}
     
-      <div className="">
+      <div>
         {data.map((eachStory, i)=>(
           <div className='card p-5' key={i}>
             { 
               eachStory.isEdit ? (
-             
                 <>
-                  <form onSubmit={(e)=>{updateStory(e, eachStory?.id)}} className='w-3/4 mx-auto'>
+                  <form onSubmit={(e)=>{updateStory(e, eachStory?._id)}} className='w-3/4 mx-auto'>
                     <label htmlFor="titleInput" className='w-full'>Title: </label>
-                    <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.metadata?.title} className='w-full bg-gray-100 border-transparent mb-5 rounded-md p-2 focus-visible:outline-none focus-visible:bg-gray-200'/>
+                    <input type="text" id="titleInput" name="titleInput" maxLength={20} minLength={2} required defaultValue={eachStory?.title} className='w-full bg-gray-100 border-transparent mb-5 rounded-md p-2 focus-visible:outline-none focus-visible:bg-gray-200'/>
                     <label htmlFor="bodyInput" className='w-full'>What's on your mind: </label>
-                    <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.metadata?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5  focus-visible:outline-none focus-visible:bg-gray-200'></textarea>
+                    <textarea type="text" id="bodyInput" name='bodyInput' rows="3" maxLength={999} minLength={10} required defaultValue={eachStory?.text} className='p-2 bg-gray-100 rounded-md w-full mb-5  focus-visible:outline-none focus-visible:bg-gray-200'></textarea>
                     <div className="flex gap-x-2">
                       <button type="submit" className='bg-violet-500 rounded-md px-4 py-2 font-semibold text-white'>Edit</button>
                       <button onClick={()=>{
@@ -159,15 +158,15 @@ function App() {
                 <>
                   <select className='bg-slate-100 text-sm py-2 px-4 border-0 rounded-md float-right'>
                     <option>...</option>
-                    <option onClick={()=>{deleteStory(eachStory?.id)}}>Delete</option>
+                    <option onClick={()=>{deleteStory(eachStory?._id)}}>Delete</option>
                     <option onClick={() => {
                         eachStory.isEdit = true;
                         console.log(eachStory.isEdit)
                         setData([...data]);
                       }}>Edit </option>
                   </select>
-                  <h2> {eachStory?.metadata?.title} </h2>
-                  <p>{eachStory?.metadata?.text}</p>
+                  <h2> {eachStory?.title} </h2>
+                  <p>{eachStory?.text}</p>
                 </>
 
             )
