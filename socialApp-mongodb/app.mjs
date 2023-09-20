@@ -35,6 +35,9 @@ run().catch(console.dir);
 const app = express();
 app.use(express.json());
 // app.use(cors())
+app.get("/",express.static(path.join(__dirname, "./web/build")))
+app.use( express.static(path.join(__dirname, './web/build')))
+
 app.use(cors(["http://localhost:3000", "127.0.0.1"]));
 app.use(morgan('combined'));
 
@@ -155,8 +158,6 @@ app.delete("/api/v1/story/:id", async (req, res) => {
 });
 
 
-app.get("/",express.static(path.join(__dirname, "./web/build")))
-app.use( express.static(path.join(__dirname, './web/build')))
 
 app.use((req, res) => {
   res.status(404).send("Not Found");
