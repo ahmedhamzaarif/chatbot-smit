@@ -38,7 +38,11 @@ app.use(express.json());
 app.get("/",express.static(path.join(__dirname, "./web/build")))
 // app.use( express.static(path.join(__dirname, './web/build')))
 
+<<<<<<< HEAD
 app.use(cors(["http://localhost:3000", "127.0.0.1","https://social-app-mongo-search.vercel.app/"]));
+=======
+app.use(cors(["http://localhost:3000", "https://social-app-mongo-search.vercel.app/"]));
+>>>>>>> 33130c48262c6a4cf95aac48e55243d49879bf36
 app.use(morgan('combined'));
 
 // Get All
