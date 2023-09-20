@@ -15,7 +15,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-const mongodbURI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.brs1yvz.mongodb.net/`
+const mongodbURI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.brs1yvz.mongodb.net/?retryWrites=true&w=majority`
 const client = new MongoClient(mongodbURI);
 const database = client.db('socialstories');
 const postCollection = database.collection('posts');
