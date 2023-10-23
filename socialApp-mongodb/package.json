@@ -9,6 +9,9 @@
     "start": "node app.mjs",
     "dev": "nodemon app.mjs"
   },
+  "engines": {
+    "node": "18.x.x"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
