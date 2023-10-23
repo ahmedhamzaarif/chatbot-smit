@@ -11,4 +11,5 @@ This repository is created for SMIT's AI & Chatbot course.
 7. [Facebook Post](https://react-app-f7830.web.app/)
 8. [Light On/Off & Temperature Increase/Decrease (React)](https://chatbot-smit.vercel.app/)
 9. [Weather App (React)](https://weather.ahmedhamza.pk)
-10. ChatApp (React)
+10. SocialApp (w/ PineCone)
+11. SocialApp (w/ MongoDB)
